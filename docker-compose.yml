@@ -1,0 +1,15 @@
+services:
+  domee:
+    image: szabto/domee:latest
+    build: .
+    container_name: domee
+    ports:
+      - "8000:8000"
+    volumes:
+      - domee-data:/data
+    restart: unless-stopped
+    environment:
+      - DOMEE_DB_PATH=/data/domee.db
+
+volumes:
+  domee-data:

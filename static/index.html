@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Domee — Domain Availability Checker</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌐</text></svg>">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">
+      <div class="logo-icon">D</div>
+      <span>Domee</span>
+    </div>
+    <div class="header-actions">
+      <button class="btn-icon" id="btn-poll" title="Check all domains now">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M3 9a6 6 0 1 1 1.05 3.36"/>
+          <path d="M3 15V12h3"/>
+        </svg>
+      </button>
+      <button class="btn-icon" id="btn-settings" title="Settings">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="9" cy="9" r="2.5"/>
+          <path d="M14.7 11.1a1.2 1.2 0 0 0 .24 1.32l.04.04a1.44 1.44 0 1 1-2.04 2.04l-.04-.04a1.2 1.2 0 0 0-1.32-.24 1.2 1.2 0 0 0-.72 1.08v.12a1.44 1.44 0 1 1-2.88 0v-.06a1.2 1.2 0 0 0-.78-1.08 1.2 1.2 0 0 0-1.32.24l-.04.04a1.44 1.44 0 1 1-2.04-2.04l.04-.04a1.2 1.2 0 0 0 .24-1.32 1.2 1.2 0 0 0-1.08-.72h-.12a1.44 1.44 0 0 1 0-2.88h.06a1.2 1.2 0 0 0 1.08-.78 1.2 1.2 0 0 0-.24-1.32l-.04-.04a1.44 1.44 0 1 1 2.04-2.04l.04.04a1.2 1.2 0 0 0 1.32.24h.06a1.2 1.2 0 0 0 .72-1.08v-.12a1.44 1.44 0 1 1 2.88 0v.06a1.2 1.2 0 0 0 .72 1.08 1.2 1.2 0 0 0 1.32-.24l.04-.04a1.44 1.44 0 1 1 2.04 2.04l-.04.04a1.2 1.2 0 0 0-.24 1.32v.06a1.2 1.2 0 0 0 1.08.72h.12a1.44 1.44 0 0 1 0 2.88h-.06a1.2 1.2 0 0 0-1.08.72z"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main content -->
+  <main class="main">
+    <div id="empty-state" class="empty-state">
+      <div class="empty-state-icon">🔍</div>
+      <div class="empty-state-text">Search for a domain to get started</div>
+    </div>
+
+    <div id="list-header" class="list-header" style="display:none">
+      <span>Domain</span>
+      <span>Expires</span>
+      <span>Status</span>
+      <span></span>
+    </div>
+    <div id="domain-list" class="domain-list"></div>
+  </main>
+
+  <!-- Search bar -->
+  <div class="search-container">
+    <div id="check-result" class="check-result"></div>
+    <div class="search-bar">
+      <input
+        type="text"
+        id="search-input"
+        class="search-input"
+        placeholder="Check domain availability... (e.g. example.com)"
+        autocomplete="off"
+        spellcheck="false"
+      >
+      <button id="btn-check" class="btn-check">Check</button>
+      <button id="btn-add" class="btn-add" title="Add to watchlist">+</button>
+    </div>
+  </div>
+
+  <!-- Settings modal -->
+  <div id="settings-modal" class="modal-overlay">
+    <div class="modal">
+      <h2>Settings</h2>
+
+      <div class="form-group">
+        <label class="form-label" for="s-polling">Polling interval (minutes)</label>
+        <input type="number" id="s-polling" class="form-input" min="1" value="60">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="s-email">Notification email</label>
+        <input type="email" id="s-email" class="form-input" placeholder="you@example.com">
+      </div>
+
+      <hr class="form-divider">
+      <div class="form-section-title">SMTP Configuration</div>
+
+      <div class="form-group">
+        <label class="form-label" for="s-smtp-host">SMTP Host</label>
+        <input type="text" id="s-smtp-host" class="form-input" placeholder="smtp.gmail.com">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="s-smtp-port">SMTP Port</label>
+        <input type="number" id="s-smtp-port" class="form-input" value="587">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="s-smtp-user">Username</label>
+        <input type="text" id="s-smtp-user" class="form-input" placeholder="your@email.com">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="s-smtp-pass">Password</label>
+        <input type="password" id="s-smtp-pass" class="form-input" placeholder="App password or SMTP password">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="s-smtp-from">From email</label>
+        <input type="email" id="s-smtp-from" class="form-input" placeholder="noreply@yourdomain.com">
+      </div>
+
+      <div class="form-group toggle-group">
+        <label class="form-label" style="margin-bottom:0">Use TLS</label>
+        <label class="toggle">
+          <input type="checkbox" id="s-smtp-tls" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="btn-close-settings">Cancel</button>
+        <button class="btn btn-primary" id="btn-save-settings">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
