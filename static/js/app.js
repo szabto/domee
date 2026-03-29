@@ -88,9 +88,12 @@ function renderDomains(domains) {
       onClick: () => deleteDomain(d.id),
     }, [deleteSvg]);
 
+    const lastChecked = d.last_checked ? formatLastChecked(d.last_checked) : "\u2014";
+
     const item = createEl("div", { className: "domain-item", "data-id": String(d.id) }, [
       createEl("span", { className: "domain-name", textContent: d.name }),
       createEl("span", { className: "domain-expiry", textContent: d.expiry_date || "\u2014" }),
+      createEl("span", { className: "domain-last-checked", textContent: lastChecked }),
       statusEl,
       deleteBtn,
     ]);
@@ -225,6 +228,27 @@ function openSettings() {
 
 function closeSettings() {
   $("#settings-modal").classList.remove("visible");
+}
+
+// --- Formatting ---
+
+function formatLastChecked(isoStr) {
+  try {
+    const date = new Date(isoStr);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if (diffMins < 1) return "Just now";
+    if (diffMins < 60) return `${diffMins}m ago`;
+    if (diffHours < 24) return `${diffHours}h ago`;
+    if (diffDays < 30) return `${diffDays}d ago`;
+    return date.toLocaleDateString();
+  } catch {
+    return "\u2014";
+  }
 }
 
 // --- Toast ---

@@ -134,7 +134,7 @@ body {
 
 .domain-item {
   display: grid;
-  grid-template-columns: 1fr 140px 120px 44px;
+  grid-template-columns: 1fr 120px 140px 110px 44px;
   align-items: center;
   padding: 14px 16px;
   border-radius: var(--radius-sm);
@@ -155,6 +155,12 @@ body {
 .domain-expiry {
   font-size: 13px;
   color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.domain-last-checked {
+  font-size: 13px;
+  color: var(--text-dim);
   font-variant-numeric: tabular-nums;
 }
 
@@ -477,7 +483,7 @@ body {
 /* List header */
 .list-header {
   display: grid;
-  grid-template-columns: 1fr 140px 120px 44px;
+  grid-template-columns: 1fr 120px 140px 110px 44px;
   align-items: center;
   padding: 8px 16px;
   gap: 12px;
@@ -505,6 +511,7 @@ body {
   }
 
   .domain-expiry { display: none; }
+  .domain-last-checked { display: none; }
   .list-header { display: none; }
 }
 
